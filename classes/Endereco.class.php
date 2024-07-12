@@ -26,6 +26,66 @@
             $this->setComplemento($complemento);
             $this->setIdlivro($idlivro);
         }
+        
+        public function incluir(){
+            $sql = 'INSERT INTO endereco(cep, pais, estado, cidade, bairro, rua, numero, complemento, idlivro) 
+                    VALUES (:cep, :pais, :estado, :cidade, :bairro, :rua, :numero, :complemento, :idlivro)';
+            $parametros = array(':cep'=>$this->getCep(),
+                                ':pais'=>$this->getPais(),
+                                ':estado'=>$this->getEstado(),
+                                ':cidade'=>$this->getCidade(),
+                                ':bairro'=>$this->getBairro(),
+                                ':rua'=>$this->getRua(),
+                                ':numero'=>$this->getNumero(),
+                                ':complemento'=>$this->getComplemento(),
+                                ':idlivro'=>$this->getIdlivro());
+            Database::executar($sql, $parametros);
+        }
+
+        public function excluir(){
+            $sql = 'DELETE FROM endereco WHERE idendereco = :id';
+            $parametros = array(':id'=> $this->getIdEndereco());
+            return Database::executar($sql, $parametros);
+        }
+
+        public function alterar(){
+            $sql = 'UPDATE endereco SET cep = :cep, pais = :pais, estado = :estado, cidade = :cidade, bairro = :bairro, rua = :rua, numero = :numero, complemento = :complemento, idlivro = :idlivro WHERE idendereco = :id';
+            $parametros = [':id' => $this->getIdendereco(),
+                        ':cep' => $this->getCep(),
+                        ':pais' => $this->getPais(),
+                        ':estado' => $this->getEstado(),
+                        ':cidade' => $this->getCidade(),
+                        ':bairro' => $this->getBairro(),
+                        ':rua' => $this->getRua(),
+                        ':numero' => $this->getNumero(),
+                        ':complemento' => $this->getComplemento(),
+                        ':idlivro' => $this->getIdlivro()]; 
+            return Database::executar($sql, $parametros);
+        }   
+
+        public static function listar($tipo = 0, $busca = "" ){
+            $conexao = Database::getInstance();
+            // montar consulta
+            $sql = "SELECT * FROM endereco";        
+            if ($tipo > 0 )
+                switch($tipo){
+                    case 1: $sql .= " WHERE id = :busca"; break;
+                    case 2: $sql .= " WHERE cep like :busca"; $busca = "%{$busca}%"; break;
+                    case 3: $sql .= " WHERE rua like :busca";  $busca = "%{$busca}%";  break;
+                    case 4: $sql .= " WHERE pais like :busca";  $busca = "%{$busca}%";  break;
+                    case 5: $sql .= " WHERE idlivro = :busca";  break;
+                }
+            $comando = $conexao->prepare($sql);      
+            if ($tipo > 0 )
+                $comando->bindValue(':busca',$busca); 
+            $comando->execute();
+            $enderecos = array();            
+            while($registro = $comando->fetch()){  
+                $endereco = new Endereco($registro['idendereco'], $registro['cep'], $registro['pais'], $registro['estado'], $registro['cidade'], $registro['bairro'], $registro['rua'], $registro['numero'], $registro['complemento'], $registro['idlivro']); array_push($enderecos,$endereco); 
+            }
+            return $enderecos;  
+        }    
+        
         /**
          * Get the value of idendereco
          */
@@ -175,28 +235,5 @@
             $this->idlivro = $idlivro;
             return $this;
         }
-
-        public function incluir(){
-            $conexao = Database::getInstance();
-            $sql = 'INSERT INTO endereco(cep, pais, estado, cidade, bairro, rua, numero, complemento, idlivro) 
-                    VALUES (:cep, :pais, :estado, :cidade, :bairro, :rua, :numero, :complemento, :idlivro)';
-            $comando = $conexao->prepare($sql);
-            $comando->bindValue(':cep', $this->cep);
-            $comando->bindValue(':pais', $this->pais);
-            $comando->bindValue(':estado', $this->estado);
-            $comando->bindValue(':cidade', $this->cidade);
-            $comando->bindValue(':bairro', $this->bairro);
-            $comando->bindValue(':rua', $this->rua);
-            $comando->bindValue(':numero', $this->numero);
-            $comando->bindValue(':complemento', $this->complemento);
-            $comando->bindValue(':idlivro', $this->idlivro);
-            try {
-                return $comando->execute();
-            } catch (PDOException $e) {
-                throw new Exception("Erro ao executar o comando no banco de dados: ".$e->getMessage()." - ".$comando->errorInfo()[2]);
-            }
-        }
-
-        
     }
 ?>

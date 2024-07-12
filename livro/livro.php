@@ -12,6 +12,7 @@
         $id = isset($_POST['id']) ? $_POST['id'] : 0; 
         $autor = isset($_POST['autor']) ? $_POST['autor'] : ""; 
         $genero = isset($_POST['genero']) ? $_POST['genero'] : ""; 
+        
         $usuario = isset($_POST['usuario']) ? $_POST['usuario'] : ""; 
         $senha = isset($_POST['senha']) ? $_POST['senha'] : ""; 
 
@@ -28,7 +29,7 @@
         $acao = isset($_POST['acao']) ? $_POST['acao'] : ""; 
 
         try{
-            $endereco = new Endereco($idendereco, $pais, $estado, $cidade, $bairro, $rua, $numero, $complemento, $idLivro);
+            $endereco = new Endereco($idendereco, $pais, $estado, $cidade, $bairro, $rua, $numero, $complemento, $idlivro);
             $login = new Login($id, $usuario, $senha);
             $livro = new Livro($id, $autor, $genero, $login, $endereco);
 

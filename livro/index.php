@@ -42,7 +42,7 @@
                 <input type="text" name="idendereco" id="idendereco" value="<?= isset($biblioteca) ? $biblioteca->getEndereco()->getIdEndereco() : 0?>" readonly >
     
                 <label for="cep">CEP:</label>
-                <input type="text" name="cep" id="cep" value="<?php isset($biblioteca) ? $biblioteca->getEndereco()->getCep() : '' ?>">
+                <input type="text" name="cep" id="cep" value="<?php if(isset($biblioteca)) echo $biblioteca->getEndereco()->getCep()?>">
                 
                 <label for="pais">País:</label>
                 <input type="text" name="pais" id="pais" value="<?php if(isset($biblioteca)) echo $biblioteca->getEndereco()->getPais()?>">
@@ -91,16 +91,24 @@
     </form>
     <hr>
     <h1>Lista meus livros</h1>
-    <table>
+    <table border=1>
         <tr>
             <th>Id</th>
             <th>Autor</th>
             <th>Gênero</th>
             <th>Usuário</th>
+            <th>País</th>
+            <th>Estado</th>
+            <th>Cidade</th>
+            <th>Rua</th>
+            <th>Complemento</th>
+            <th>Número</th>
+            <th>CEP</th>
         </tr>
         <?php  
             foreach($lista as $livro){
-                echo "<tr><td><a href='index.php?id=".$livro->getId()."'>".$livro->getId()."</a></td><td>".$livro->getAutor()."</td><td>".$livro->getGenero()."</td><td>".$livro->getLogin()->getUsuario()."</td><td>".$livro->getAutor()."</td><td>".$livro->getGenero()."</td></tr>";
+                var_dump($livro->getLogin()->getUsuario());
+                echo "<tr><td><a href='index.php?id=".$livro->getId()."'>".$livro->getId()."</a></td><td>".$livro->getAutor()."</td><td>".$livro->getGenero()."</td><td>".$livro->getLogin()->getUsuario()."</td><td>".$livro->getEndereco()->getPais()."</td><td>".$livro->getEndereco()->getEstado()."</td><td>".$livro->getEndereco()->getCidade()."</td><td>".$livro->getEndereco()->getRua()."</td><td>".$livro->getEndereco()->getComplemento()."</td><td>".$livro->getEndereco()->getNumero()."</td><td>".$livro->getEndereco()->getCep()."</td></tr>";
             }     
         ?>
     </table>

@@ -65,44 +65,32 @@ class Livro{
     }
 
     public function incluir(){
-        $conexao = Database::getInstance();
-        $sql = 'INSERT INTO livro (autor, genero, usuario, senha) VALUES (:autor, :genero, :usuario, :senha)';
-        // $conexao->beginTransaction();
-        $comando = $conexao->prepare($sql); 
-        $comando->bindValue(':autor',$this->autor);
-        $comando->bindValue(':genero',$this->genero);
-        $comando->bindValue(':usuario',$this->login->getUsuario()); //pega do objeto login, como é privado precisa usar o metódo get 
-        $comando->bindValue(':senha',$this->login->getSenha());
-        try {
-            $comando->execute();
-            $this->endereco->setIdlivro($conexao->lastInsertId());
-            $this->endereco->incluir();
-            // $conexao->commit();
-            return true;
-        } catch (PDOException $e) {
-            // $conexao->rollBack();
-            throw new Exception("Erro ao executar o comando no banco de dados: ".$e->getMessage()." - ".$comando->errorInfo()[2]);
-        }
+        $sql = 'INSERT INTO Livro (autor, genero, usuario, senha) VALUES (:autor, :genero, :usuario, :senha)';
+        $parametros = array(':autor'=>$this->autor,
+                            ':genero'=>$this->genero,
+                            ':usuario'=>$this->getLogin()->getUsuario(),
+                            ':senha'=>$this->getLogin()->getSenha());
+
+        Database::executar($sql, $parametros);
+        
+        $this->endereco->setIdlivro(Database::$lastId);
+        $this->endereco->incluir();
     }    
 
     public function excluir(){
-        $conexao = Database::getInstance();
         $sql = 'DELETE FROM livro WHERE id = :id';
-        $comando = $conexao->prepare($sql); 
-        $comando->bindValue(':id', $this->id);
-        return $comando->execute();
+        $parametros = array(':id'=> $this->id);
+        return Database::executar($sql, $parametros);
     }  
 
     public function alterar(){
-        $conexao = Database::getInstance();
         $sql = 'UPDATE livro SET autor = :autor, genero = :genero, usuario = :usuario, senha = :senha WHERE id = :id';
-        $comando = $conexao->prepare($sql); 
-        $comando->bindValue(':id',$this->id);
-        $comando->bindValue(':autor',$this->autor);
-        $comando->bindValue(':genero',$this->genero);
-        $comando->bindValue(':usuario',$this->login->getUsuario());
-        $comando->bindValue(':senha',$this->login->getSenha());
-        return $comando->execute();
+        $parametros = array(':id'=>$this->id,
+                            ':autor',$this->autor,
+                            ':genero',$this->genero,
+                            ':usuario',$this->login->getUsuario(),
+                            ':senha',$this->login->getSenha());
+        return Database::executar($sql, $parametros);
     }    
 
     public static function listar($tipo = 0, $busca = "" ){
@@ -123,9 +111,10 @@ class Livro{
         $livros = array(); 
 
         while($registro = $comando->fetch()){
-            $login = new Login($registro['id'], $registro['usuario'], $registro['senha']);
-            // $endereco = new Endereco::listar(5, $registro['id'][0]);
-            $livro = new Livro($registro['id'], $registro['autor'], $registro['genero'], $login);
+            $login = new Login($registro['usuario'], $registro['senha']);
+            $enderecos = Endereco::listar(5, $registro['id']);
+            $endereco = count($enderecos) > 0 ? $enderecos[0] : null;
+            $livro = new Livro($registro['id'], $registro['autor'], $registro['genero'], $login, $endereco);
             array_push($livros,$livro);
         }
         return $livros; 
