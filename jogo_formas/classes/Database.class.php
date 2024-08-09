@@ -25,7 +25,7 @@ class Database{
         return $comando;
     }
 
-    public static function executar($sql, $parametros = array()){
+    public static function executar($sql,$parametros = array()){
         $conexao = self::conectar();
         $comando = self::preparar($conexao,$sql);
         $comando = self::vincular($comando, $parametros);

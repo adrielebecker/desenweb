@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <?php
     include("quadrado.php");
+    include("../unidade/unidade.php");
 ?>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desenhe seu quadrado</title>
+    <title>Desenhe o seu quadrado</title>
 </head>
 <body>
-    <h3><?=$msg?></h3>
+    <?php //include "cadastro.php";?>
     <fieldset>
         <legend>Informações sobre o quadrado</legend>
         <form action="quadrado.php" method="post">
-            <label for="id">Id:</label>
-            <input type="text" name="id" id="id" value="<?=isset($quadrado) ? $quadrado->getId(): 0 ?>" readonly>
+            <label for="id_quadrado">Id:</label>
+            <input type="text" name="id_quadrado" id="id_quadrado" 
+                    value="<?=isset($quadrado) ? $quadrado->getIdQuadrado(): 0 ?>" readonly><br>
 
             <label for="unidadeMedida">Unidade de Medida:</label>
-            <input type="text" name="unidadeMedida" id="unidadeMedida" placeholder="porcentagem, cm e px" value="<?php if(isset($quadrado)) echo $quadrado->getUnidadeMedida()?>">
+            <select name="unidadeMedida" id="unidadeMedida">
+                <option value="0">Selecione uma opção</option>
+                <?php  
+                    // echo "<option value='0'>Selecione uma opção</option>";
+                    foreach($lista_unidade as $unidade){
+                        $str = "<option value='{$unidade->getIdUnidadeMedida()}";
+                        if(isset($lista_quadrado)){
+                            foreach($lista_quadrado as $quadrado){
+                                if($quadrado->getUnidadeMedida()->getIdUnidadeMedida() == $unidade->getIdUnidadeMedida()){
+                                    $str .= "selected";
+                                }
+                            }
+                            // echo "<pre>";
+                            // var_dump($lista_quadrado);
+                            // echo "<br>";
+                            // echo "<pre>";
+                            // var_dump($unidade);
+                            // echo "<br>";
+                        }
+                        $str .= "'>{$unidade->getDescricao()}</option>";
+                        echo $str;
+                    }      
+                    // var_dump($lista_quadrado);
+                ?>
+            </select>
 
             <label for="lado">Lado:</label>
             <input type="text" name="lado" id="lado" value="<?php if(isset($quadrado)) echo $quadrado->getLado()?>">
@@ -29,7 +55,6 @@
             <button type="submit" name="acao" id="acao" value="excluir">Excluir</button>
         </form>
     </fieldset>
-
     <hr>
     <form action="" method="get">
         <fieldset>
@@ -41,7 +66,8 @@
                 <option value="0">Escolha</option>
                 <option value="1">Id</option>
                 <option value="2">Cor</option>
-                <option value="3">Unidade de Medida</option>
+                <option value="3">Lado</option>
+                <option value="4">Unidade de Medida</option>
             </select>
         <button type='submit'>Buscar</button>
 
@@ -52,13 +78,22 @@
     <table border=1>
         <tr>
             <th>Id</th>
-            <th>Cor</th>
             <th>Lado</th>
+            <th>Cor</th>
             <th>Unidade de Medida</th>
+            <th>Quadrado</th>
         </tr>
         <?php  
-            foreach($lista as $quadrado){
-                echo "<tr><td><a href='index.php?id=".$quadrado->getId()."'>".$quadrado->getId()."</a></td><td>".$quadrado->getCor()."</td><td>".$quadrado->getUnidadeMedida()."</td><td>".$quadrado->getLado()."</td></tr>";
+            foreach($lista_quadrado as $quadrado){
+                // echo "<pre>";
+                // var_dump($quadrado);
+                echo "<tr>
+                    <td><a href='index.php?id=".$quadrado->getIdQuadrado()."'>".$quadrado->getIdQuadrado()."</a></td>
+                    <td>".$quadrado->getLado()."</td>
+                    <td>".$quadrado->getCor()."</td>
+                    <td>".$quadrado->getUnidadeMedida()->getIdUnidadeMedida()."</td>
+                    <td>".$quadrado->desenharQuadrado()."</td>
+                </tr>";
             }     
         ?>
     </table>

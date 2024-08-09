@@ -1,137 +1,129 @@
 <?php
     require_once('Database.class.php');
-
+    
     class Quadrado{
-        private $id;
-        private $unidadeMedida;
-        private $lado;
+        private $id_quadrado;
         private $cor;
+        private $lado;
+        private $unidadeMedida;
 
-        public function __construct($id = 0, $unidadeMedida = "null", $lado = 0, $cor = "null"){
-            $this->setId($id);
-            $this->setUnidadeMedida($unidadeMedida);
+        
+        public function __construct($id_quadrado = 0, $lado = "null", $cor = "null", Unidade $unidadeMedida = null){
+            $this->setIdQuadrado($id_quadrado);
             $this->setLado($lado);
             $this->setCor($cor);
+            $this->setUnidadeMedida($unidadeMedida);
         }
 
         public function inserir(){
-            $sql = "INSERT INTO quadrado(id, unidadeMedida, lado, cor) VALUES (:id, :unidadeMedida, :lado, :cor)";
-            $parametros = [':id' => $this->id,
-                            ':unidadeMedida' => $this->unidadeMedida,
-                            ':lado' => $this->lado,
-                            ':cor' => $this->cor];
-
+            $sql = "INSERT INTO quadrado(id_quadrado, lado, cor, unidadeMedida) VALUES (:id_quadrado, :lado, :cor, :unidadeMedida)";
+            $parametros = [':id_quadrado' => $this->getIdQuadrado(),
+                            ':lado' => $this->getLado(),
+                            ':cor' => $this->getCor(),
+                            'unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
+                        ];
             Database::executar($sql, $parametros);
         }
 
         public function alterar(){
-            $sql = "UPDATE quadrado SET unidadeMedida = :unidadeMedida, lado = :lado, cor = :cor WHERE id = :id";
-            $parametros = [':id' => $this->id,
-                            ':unidadeMedida' => $this->unidadeMedida,
-                            ':lado' => $this->lado,
-                            ':cor' => $this->cor];
+            $sql = "UPDATE quadrado SET id_quadrado = :id_quadradro, lado = :lado, cor = :cor, unidadeMedida = :unidadeMedida)";
+            $parametros = [':id_quadrado' => $this->getIdQuadrado(),
+                            ':lado' => $this->getLado(),
+                            ':cor' => $this->getCor(),
+                            'unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
+                        ];
             Database::executar($sql, $parametros);
         }
 
         public function excluir(){       
-            $sql = 'DELETE FROM quadrado WHERE id = :id';
-            $parametros = array(':id'=> $this->id);
+            $sql = 'DELETE FROM quadrado WHERE id_quadrado = :id_quadrado';
+            $parametros = array(':id_quadrado'=> $this->id_quadrado);
             return Database::executar($sql, $parametros);
         }  
 
-        public static function listar($tipo = 0, $busca = "" ){
+        public static function listar($tipo = 0, $busca = "null"){
             $conexao = Database::getInstance();
-            $sql = "SELECT * FROM quadrado";        
-            if ($tipo > 0 )
+            $sql = "SELECT * FROM quadrado, unidadeMedida";
+            if($tipo > 0){
                 switch($tipo){
-                 case 1: $sql .= " WHERE id = :busca"; break;
-                 case 2: $sql .= " WHERE cor like :busca"; $busca = "%{$busca}%"; break;
-                 case 3: $sql .= " WHERE unidadeMedida like :busca";  $busca = "%{$busca}%";  break;
+                    case 1: 
+                        $sql .= " WHERE id_quadrado= :busca";
+                        break;
+                    case 2: 
+                        $sql .= " WHERE cor like :busca"; 
+                        $busca = "%{$busca}%"; 
+                        break;
+                    case 3: 
+                        $sql .= " WHERE lado like :busca"; 
+                        $busca = "%{$busca}%"; 
+                        break;
+                    case 4: 
+                        $sql .= " WHERE descricao like :busca";  
+                        $busca = "%{$busca}%";  
+                        break;
                 }
-            $comando = $conexao->prepare($sql); 
-            if ($tipo > 0 ){
-               $comando->bindValue(':busca',$busca);
+                // $parametros = array();
+                $comando = $conexao->prepare($sql); 
+                
+                if ($tipo > 0 ){
+                    $comando->bindValue(':busca', $busca);
+                    // $parametros = [':busca' => $busca];
+                }
+
+                $comando->execute();
+                // $comando = Database::executar($sql, $parametros);
+                $quadrados = array();
+            
+                while($registro = $comando->fetch(PDO::FETCH_ASSOC)){
+                    $unidadeMedida = Unidade::listar(1, $registro['unidadeMedida'])[0];
+                    $quadrado = new Quadrado($registro['id_quadrado'], $registro['lado'], $registro['cor'], $unidadeMedida);
+                    array_push($quadrados,$quadrado);
+                }
+                return $quadrados; 
             }
-
-            $comando->execute();
-            $quadrados = array(); 
-            while($registro = $comando->fetch()){
-               $quadrado = new Quadrado($registro['id'], $registro['unidadeMedida'], $registro['lado'], $registro['cor']);
-               array_push($quadrados,$quadrado);
-            }
-            return $quadrados; 
-        }    
-
-        /**
-         * Get the value of id
-         */
-        public function getId()
-        {
-                return $this->id;
         }
 
-        /**
-         * Set the value of id
-         */
-        public function setId($id): self
-        {
-                $this->id = $id;
-
-                return $this;
+        public function DesenharQuadrado(){
+            return "<div class='quadrado' style='diplay:block' 
+                    width:{$this->getLado()}{$this->getUnidadeMedida()->getIdUnidadeMedida()};
+                    height: {$this->getLado()}{$this->getUnidadeMedida()->getIdUnidadeMedida()};
+                    background-color:{$this->getCor()}></div>";
         }
 
-        /**
-         * Get the value of unidadeMedida
-         */
-        public function getUnidadeMedida()
-        {
-                return $this->unidadeMedida;
+        public function getIdQuadrado(){
+            return $this->id_quadrado;
         }
 
-        /**
-         * Set the value of unidadeMedida
-         */
-        public function setUnidadeMedida($unidadeMedida): self
-        {
-                $this->unidadeMedida = $unidadeMedida;
-
-                return $this;
+        public function setIdQuadrado($id_quadrado): self{
+            $this->id_quadrado = $id_quadrado;
+            return $this;
         }
 
-        /**
-         * Get the value of lado
-         */
-        public function getLado()
-        {
-                return $this->lado;
+        public function getCor(){
+            return $this->cor;
         }
 
-        /**
-         * Set the value of lado
-         */
-        public function setLado($lado): self
-        {
-                $this->lado = $lado;
-
-                return $this;
+        public function setCor($cor): self{
+            $this->cor = $cor;
+            return $this;
         }
 
-        /**
-         * Get the value of cor
-         */
-        public function getCor()
-        {
-                return $this->cor;
+        public function getLado(){
+            return $this->lado;
         }
 
-        /**
-         * Set the value of cor
-         */
-        public function setCor($cor): self
-        {
-                $this->cor = $cor;
+        public function setLado($lado): self{
+            $this->lado = $lado;
+            return $this;
+        }
 
-                return $this;
+        public function getUnidadeMedida(){
+            return $this->unidadeMedida;
+        }
+
+        public function setUnidadeMedida(Unidade $unidadeMedida): self{
+            $this->unidadeMedida = $unidadeMedida;
+            return $this;
         }
     }
 ?>
