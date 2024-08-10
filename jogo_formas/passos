@@ -1,0 +1,59 @@
+criar classe quadrado
+    # atributos
+    # getters e setters
+    # construtor
+    # inserir
+    # alterar
+    # excluir 
+    # listar
+# configurar banco 
+# criar classe database
+#     intanciar
+#     conectar
+#     preparar
+#     vincular 
+#     executar
+# criar formulario de cadastro de quadrado
+# formulario de busca
+# listagem
+# criar arquivo php de tratamento de formulario
+#     para POST:
+#         setar as variaveis 
+#         criar um quadrado - obj
+#         com base na ação chamar o método
+#     para GET:
+#         setar as váriaves 
+#         chamar método listar e seus parametros
+
+
+# criar classe unidade
+    # atributos
+    # getters e setters
+    # construtor
+    # inserir
+    # alterar
+    # excluir
+    # listar
+# formulario cadastro unidade
+formulario busca
+listagem
+arquivo de tratamento de formulario
+    # para POST:
+        # setar as variaveis
+        # criar uma unidade 
+        # chamar os metodos
+    para get:
+        setar as variaveis
+        chamar o metodo listar e parametros
+    
+classe quadrado
+    no contrutor e setter definir unidade como objeto
+    inserir e alterar add o id da unidade
+    listar add o objeto unidade
+    no formulario add select com unidades cadastradas
+    na listagem add o id da unidade
+    post: criar objeto unidade e colocar dentro de objeto quadrado
+    
+
+
+
