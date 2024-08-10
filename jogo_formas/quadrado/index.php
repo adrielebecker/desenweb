@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
     include "quadrado.php";
+    include "../unidadeMedida/unidadeMedida.php";
 ?>
 <html lang="pt-BR">
 <head>
@@ -30,9 +31,24 @@
                 </div>
                 
                 <div class="col-3">
-                    <label for="unidade_medida" class="form-label">Unidade de Medida:</label>                        
-                    <input type="text" name="unidade_medida" id="unidade_medida" value="<?php if(isset($quadrado)) echo $quadrado->getUnidadeMedida()?>" class="form-control">
+                    <label for="unidade_medida" class="form-label">Unidade de Medida:</label>   
+                    <select name="unidade_medida" id="unidade_medida" class="form-select">
+                        <option value="0">Selecione uma opção</option>
+                    <?php
+                        foreach($lista_unidade as $unidade){
+                            $str = "<option value='{$unidade->getIdUnidadeMedida()}'";
+                            if(isset($quadrado)){
+                                if($quadrado->getUnidadeMedida()->getIdUnidadeMedida() == $unidade->getIdUnidadeMedida()){
+                                    $str .= "selected";
+                                }
+                            }
+                            $str .= ">{$unidade->getDescricao()}</option>";
+                            echo $str;
+                        }      
+                    ?>                
+                    </select>  
                 </div>
+                        
 
                 <div class="col-1 mt-2">
                     <button type="submit" name="acao" id="acao" value="salvar" class="btn btn-success mt-4">Salvar</button>
@@ -50,8 +66,8 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-3">
-                    <label for="tipo" class="form-label">Tipo:</label>
-                    <select name="tipo" id="tipo" class="form-select">
+                    <label for="tipo_quadrado" class="form-label">Tipo:</label>
+                    <select name="tipo_quadrado" id="tipo_quadrado" class="form-select">
                         <option value="0">Selecione</option>
                         <option value="1">Id Quadrado</option>
                         <option value="2">Lado</option>
@@ -59,8 +75,8 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <label for="busca" class="form-label">Busca:</label>
-                    <input type="text" name="busca" id="busca" class="form-control">
+                    <label for="busca_quadrado" class="form-label">Busca quadrado:</label>
+                    <input type="text" name="busca_quadrado" id="busca_quadrado" class="form-control">
                 </div>
                 <div class="col-1 mt-4">
                     <button type="submit" class="btn btn-outline-success mt-2">Buscar</button>
@@ -70,8 +86,8 @@
     </fieldset>
 
     <div class="container mt-5 text-center">
-        <table class="table table-striped table-hover border">
-            <tr>
+        <table class="table table-hover border align-middle table-bordered">
+            <tr class="table-dark">
                 <th>Id Quadrado</th>
                 <th>Lado</th>
                 <th>Cor</th>
@@ -86,14 +102,10 @@
                         <td>{$quadrado->getIdQuadrado()}</td>
                         <td>{$quadrado->getLado()}</td>
                         <td>{$quadrado->getCor()}</td>
-                        <td>{$quadrado->getUnidadeMedida()}</td>
-                        <td></td>
+                        <td>{$quadrado->getUnidadeMedida()->getDescricao()}</td>
+                        <td class=''>{$quadrado->DesenharQuadrado()}</td>
                         <td><a href='index.php?id_quadrado={$quadrado->getIdQuadrado()}'>Alterar</a></td>
                     </tr>";
-
-                    // echo "<pre>";
-                    // var_dump($lista_quadrado);
-                    // var_dump($quadrado);
                 }
             ?>
         </table>

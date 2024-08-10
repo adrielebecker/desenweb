@@ -39,16 +39,16 @@
             <div class="row">
                 <div class="col-2"></div>
                 <div class="col-3">
-                    <label for="tipo" class="form-label">Tipo:</label>
-                    <select name="tipo" id="tipo" class="form-select">
+                    <label for="tipo_unidade" class="form-label">Tipo:</label>
+                    <select name="tipo_unidade" id="tipo_unidade" class="form-select">
                         <option value="0">Selecione uma opção</option>
                         <option value="1">Id Unidade de Medida</option>
                         <option value="2">Descrição</option>
                     </select>
                 </div>
                 <div class="col-3">
-                    <label for="busca" class="form-label">Busca:</label>
-                    <input type="text" name="busca" id="busca" class="form-control">
+                    <label for="busca_unidade" class="form-label">Buscar unidade de medida:</label>
+                    <input type="text" name="busca_unidade" id="busca_unidade" class="form-control">
                 </div>
                 <div class="col-1 mt-4">
                     <button type="submit" class="btn btn-outline-success mt-2">Buscar</button>
@@ -58,8 +58,8 @@
     </fieldset>
 
     <div class="container mt-5 text-center">
-        <table class="table table-striped border rounded table-secondary table-hover">
-            <tr>
+        <table class="table table-striped border rounded table-bordered table-hover">
+            <tr class="table-dark">
                 <th>Id Unidade de Medida</th>
                 <th>Descrição</th>
             </tr>

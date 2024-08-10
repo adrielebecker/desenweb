@@ -29,8 +29,8 @@
             header('Location: index.php?MSG=Erro: '.$e->getMessage());
         }
     } elseif($_SERVER['REQUEST_METHOD'] == 'GET'){
-        $tipo = isset($_GET['tipo']) ? $_GET['tipo'] : 0;
-        $busca = isset($_GET['busca']) ? $_GET['busca'] : "";
-        $lista_unidade = UnidadeMedida::listar($tipo, $busca);
+        $tipo_unidade = isset($_GET['tipo_unidade']) ? $_GET['tipo_unidade'] : 0;
+        $busca_unidade = isset($_GET['busca_unidade']) ? $_GET['busca_unidade'] : "";
+        $lista_unidade = UnidadeMedida::listar($tipo_unidade, $busca_unidade);
     }
 ?>

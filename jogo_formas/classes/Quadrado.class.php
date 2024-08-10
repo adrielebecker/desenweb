@@ -1,12 +1,14 @@
 <?php
     require_once("../classes/Database.class.php");
+    require_once("../classes/UnidadeMedida.class.php");
+
     class Quadrado{
         private $id_quadrado;
         private $lado;
         private $cor;
         private $unidade_medida;
 
-        public function __construct($id_quadrado = 0, $lado = 0, $cor = "", $unidade_medida = "null"){
+        public function __construct($id_quadrado = 0, $lado = 0, $cor = "", UnidadeMedida $unidade_medida = null){
             $this->setIdQuadrado($id_quadrado);
             $this->setLado($lado);
             $this->setCor($cor);
@@ -18,7 +20,7 @@
             $parametros = [
                 ':lado' => $this->getLado(),
                 ':cor' => $this->getCor(),
-                ':unidadeMedida' => $this->getUnidadeMedida()
+                ':unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
             ];
 
             Database::executar($sql, $parametros);
@@ -30,7 +32,7 @@
                 ':id_quadrado' => $this->getIdQuadrado(),
                 ':lado' => $this->getLado(),
                 ':cor' => $this->getCor(),
-                ':unidadeMedida' => $this->getUnidadeMedida()
+                ':unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
             ];
 
             Database::executar($sql, $parametros);
@@ -56,7 +58,7 @@
                         $sql .= " WHERE lado = :busca"; 
                         break;
                     case 3: 
-                        $sql .= ' WHERE cor like :busca';
+                        $sql .= ' WHERE cor LIKE :busca';
                         $busca = "%{$busca}%";
                         break;
                     default:
@@ -73,18 +75,19 @@
             $formas = array();
 
             while($registro = $comando->fetch(PDO::FETCH_ASSOC)){
-                $quadrado = new Quadrado($registro['id_quadrado'], $registro['lado'], $registro['cor'], $registro['unidadeMedida']);
+                $unidade = UnidadeMedida::listar(1, $registro['unidadeMedida'])[0];
+                $quadrado = new Quadrado($registro['id_quadrado'], $registro['lado'], $registro['cor'], $unidade);
                 array_push($formas, $quadrado);
             }
             return $formas;
         }
 
-        // public function DesenharQuadrado(){
-        //     return "<div class='quadrado' style='diplay:block' 
-        //             width:{$this->getLado()}{$this->getUnidadeMedida()->getIdUnidadeMedida()};
-        //             height: {$this->getLado()}{$this->getUnidadeMedida()->getIdUnidadeMedida()};
-        //             background-color:{$this->getCor()}></div>";
-        // }
+        public function DesenharQuadrado(){
+            return "<div style='display: inline-block;
+                    width:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
+                    height:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
+                    background-color:".$this->getCor().";'></div>";
+        }
         
         public function getIdQuadrado(){
             return $this->id_quadrado;
@@ -117,7 +120,7 @@
             return $this->unidade_medida;
         }
 
-        public function setUnidadeMedida($unidade_medida): self{
+        public function setUnidadeMedida(UnidadeMedida $unidade_medida): self{
             $this->unidade_medida = $unidade_medida;
             return $this;
         }

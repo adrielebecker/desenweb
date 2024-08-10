@@ -1,5 +1,6 @@
 <?php
     require_once("../classes/Quadrado.class.php");
+    require_once("../classes/UnidadeMedida.class.php");
 
     $id_quadrado = isset($_GET['id_quadrado']) ? $_GET['id_quadrado'] : 0;
     if($id_quadrado > 0){
@@ -13,7 +14,8 @@
         $acao = isset($_POST['acao']) ? $_POST['acao'] : "";
 
         try {
-            $quadrado = new Quadrado($id_quadrado, $lado, $cor, $unidade_medida);
+            $unidade = UnidadeMedida::listar(1, $unidade_medida)[0];
+            $quadrado = new Quadrado($id_quadrado, $lado, $cor, $unidade);
             $resultado = "";
 
             if($acao == "salvar"){
@@ -31,12 +33,9 @@
             header('Location: index.php?MSG=Erro: '.$e->getMessage());
         }
     } elseif($_SERVER['REQUEST_METHOD'] == 'GET'){
-        $tipo = isset($_GET['tipo']) ? $_GET['tipo'] : 0;
-        $busca = isset($_GET['busca']) ? $_GET['busca'] : "";
-        $lista_quadrado = Quadrado::listar($tipo, $busca);
+        $tipo_quadrado = isset($_GET['tipo_quadrado']) ? $_GET['tipo_quadrado'] : 0;
+        $busca_quadrado = isset($_GET['busca_quadrado']) ? $_GET['busca_quadrado'] : "";
+        $lista_quadrado = Quadrado::listar($tipo_quadrado, $busca_quadrado);
     }
-
-    // echo "<pre>";
-    // var_dump($lista_quadrado);
 
 ?>
