@@ -1,38 +1,36 @@
 <?php
     require_once("../classes/Database.class.php");
     require_once("../classes/UnidadeMedida.class.php");
+    require_once("../classes/Formas.class.php");
 
-    class Quadrado{
-        private $id_quadrado;
+    class Quadrado extends Formas{
         private $lado;
-        private $cor;
-        private $unidade_medida;
 
-        public function __construct($id_quadrado = 0, $lado = 0, $cor = "", UnidadeMedida $unidade_medida = null){
-            $this->setIdQuadrado($id_quadrado);
+        public function __construct($id = 0, $lado = 0, $cor = "", UnidadeMedida $unidade_medida = null, $fundo = "null"){
+            parent::__construct($id, $cor, $unidade_medida, $fundo); //chamando o construtor da classe pai
             $this->setLado($lado);
-            $this->setCor($cor);
-            $this->setUnidadeMedida($unidade_medida);
         }
 
-        public function inserir(){
-            $sql = "INSERT INTO quadrado(lado, cor, unidadeMedida) VALUES (:lado, :cor, :unidadeMedida)";
+        public function inserir(){ //assinatura do método
+            $sql = "INSERT INTO quadrado(lado, cor, unidadeMedida, fundo) VALUES (:lado, :cor, :unidadeMedida, :fundo)";
             $parametros = [
                 ':lado' => $this->getLado(),
-                ':cor' => $this->getCor(),
-                ':unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
+                ':cor' => parent::getCor(),
+                ':unidadeMedida' => parent::getUnidadeMedida()->getIdUnidadeMedida(),
+                ':fundo' => parent::getFundo(),
             ];
 
             Database::executar($sql, $parametros);
         }
 
         public function alterar(){
-            $sql = "UPDATE quadrado SET lado = :lado, cor = :cor, unidadeMedida = :unidadeMedida WHERE id_quadrado = :id_quadrado";
+            $sql = "UPDATE quadrado SET lado = :lado, cor = :cor, unidadeMedida = :unidadeMedida, fundo = :fundo WHERE id_quadrado = :id_quadrado";
             $parametros = [
-                ':id_quadrado' => $this->getIdQuadrado(),
+                ':id_quadrado' => parent::getId(),
                 ':lado' => $this->getLado(),
-                ':cor' => $this->getCor(),
-                ':unidadeMedida' => $this->getUnidadeMedida()->getIdUnidadeMedida()
+                ':cor' => parent::getCor(),
+                ':unidadeMedida' => parent::getUnidadeMedida()->getIdUnidadeMedida(),
+                ':fundo' => parent::getFundo(),
             ];
 
             Database::executar($sql, $parametros);
@@ -41,13 +39,13 @@
         public function excluir(){
             $sql = "DELETE FROM quadrado WHERE id_quadrado = :id_quadrado";
             $parametros = [
-                ':id_quadrado' => $this->getIdQuadrado()
+                ':id_quadrado' => parent::getId()
             ];
 
             Database::executar($sql, $parametros);
         }
 
-        public static function listar($tipo = 0, $busca = ""){
+        public static function listar($tipo = 0, $busca = ""):array{
             $sql = "SELECT * FROM quadrado";
             if($tipo > 0){
                 switch($tipo){
@@ -76,7 +74,7 @@
 
             while($registro = $comando->fetch(PDO::FETCH_ASSOC)){
                 $unidade = UnidadeMedida::listar(1, $registro['unidadeMedida'])[0];
-                $quadrado = new Quadrado($registro['id_quadrado'], $registro['lado'], $registro['cor'], $unidade);
+                $quadrado = new Quadrado($registro['id_quadrado'], $registro['lado'], $registro['cor'], $unidade, $registro['fundo']);
                 array_push($formas, $quadrado);
             }
             return $formas;
@@ -86,17 +84,19 @@
             return "<div style='display: inline-block;
                     width:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
                     height:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
-                    background-color:".$this->getCor().";'></div>";
+                    background-color:".$this->getCor().";
+                    background-image: url(\"{$this->getFundo()}\")'></div>";
         }
         
-        public function getIdQuadrado(){
-            return $this->id_quadrado;
+        public function calcularArea(){
+            $area = $this->getLado() * $this->getLado();
+            return $area;
+        }
+        public function calcularPerimetro(){
+            $perimetro = $this->getLado() + $this->getLado() + $this->getLado() + $this->getLado();
+            return $perimetro;
         }
 
-        public function setIdQuadrado($id_quadrado): self{
-            $this->id_quadrado = $id_quadrado;
-            return $this;
-        }
 
         public function getLado(){
             return $this->lado;
@@ -104,24 +104,6 @@
 
         public function setLado($lado): self{
             $this->lado = $lado;
-            return $this;
-        }
-
-        public function getCor(){
-            return $this->cor;
-        }
-
-        public function setCor($cor): self{
-            $this->cor = $cor;
-            return $this;
-        }
-
-        public function getUnidadeMedida(){
-            return $this->unidade_medida;
-        }
-
-        public function setUnidadeMedida(UnidadeMedida $unidade_medida): self{
-            $this->unidade_medida = $unidade_medida;
             return $this;
         }
     }

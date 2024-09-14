@@ -54,5 +54,7 @@
     #post: criar objeto unidade e colocar dentro de objeto quadrado 
 
 
-
-
+1. criar formulario de cadastro de triangulo
+2. criar classe abstrata triangulo
+3. criar metodos abstratos 
+4. 

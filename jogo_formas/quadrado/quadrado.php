@@ -11,11 +11,13 @@
         $lado = isset($_POST['lado']) ? $_POST['lado'] : 0;
         $cor = isset($_POST['cor']) ? $_POST['cor'] : "";
         $unidade_medida = isset($_POST['unidade_medida']) ? $_POST['unidade_medida'] : "";
+        $arquivo = isset($_FILES['fundo']) ? $_FILES['fundo'] : "";
         $acao = isset($_POST['acao']) ? $_POST['acao'] : "";
+        $destino = "../".IMG."/".$arquivo['name'];
 
         try {
             $unidade = UnidadeMedida::listar(1, $unidade_medida)[0];
-            $quadrado = new Quadrado($id_quadrado, $lado, $cor, $unidade);
+            $quadrado = new Quadrado($id_quadrado, $lado, $cor, $unidade, $destino);
             $resultado = "";
 
             if($acao == "salvar"){
@@ -28,6 +30,7 @@
                 $resultado = $quadrado->excluir();
             }
 
+            move_uploaded_file($arquivo['tmp_name'], $destino);
             header('Location: index.php');
         } catch (PDOException $e) {
             header('Location: index.php?MSG=Erro: '.$e->getMessage());

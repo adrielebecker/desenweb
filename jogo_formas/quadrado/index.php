@@ -13,16 +13,16 @@
 <body>
     <fieldset class="container border rounded mt-5 pt-2 pb-3 text-center">
         <legend>Cadastro de quadrado</legend>
-        <form action="quadrado.php" method="post">
+        <form action="quadrado.php" method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-3">
+                <div class="col-2">
                     <label for="id_quadrado" class="form-label">Id quadrado:</label>                        
-                    <input type="text" name="id_quadrado" id="id_quadrado" value="<?=isset($quadrado) ? $quadrado->getIdQuadrado() : 0?>" class="form-control">
+                    <input type="text" name="id_quadrado" id="id_quadrado" value="<?=isset($quadrado) ? $quadrado->getId() : 0?>" class="form-control">
                 </div>
                 
                 <div class="col-1">
                     <label for="cor" class="form-label">Cor:</label>                        
-                    <input type="color" name="cor" id="cor" value="<?php if(isset($quadrado)) echo $quadrado->getCor()?>" class="form-control form-control-color ms-2">
+                    <input type="color" name="cor" id="cor" value="<?php if(isset($quadrado)) echo $quadrado->getCor()?>" class="form-control-color ms-2">
                 </div>
 
                 <div class="col-3">
@@ -39,7 +39,7 @@
                             $str = "<option value='{$unidade->getIdUnidadeMedida()}'";
                             if(isset($quadrado)){
                                 if($quadrado->getUnidadeMedida()->getIdUnidadeMedida() == $unidade->getIdUnidadeMedida()){
-                                    $str .= "selected";
+                                    $str .= " selected";
                                 }
                             }
                             $str .= ">{$unidade->getDescricao()}</option>";
@@ -48,7 +48,10 @@
                     ?>                
                     </select>  
                 </div>
-                        
+                <div class="col-3">
+                    <label for="fundo" class="form-label">Imagem de Fundo</label>
+                    <input type="file" name="fundo" id="fundo" value="<?php if(isset($quadrado)) echo $quadrado->getFundo()?>" class="form-control">
+                </div>     
 
                 <div class="col-1 mt-2">
                     <button type="submit" name="acao" id="acao" value="salvar" class="btn btn-success mt-4">Salvar</button>
@@ -99,12 +102,12 @@
             <?php
                 foreach($lista_quadrado as $quadrado){
                     echo "<tr>
-                        <td>{$quadrado->getIdQuadrado()}</td>
+                        <td>{$quadrado->getId()}</td>
                         <td>{$quadrado->getLado()}</td>
                         <td>{$quadrado->getCor()}</td>
                         <td>{$quadrado->getUnidadeMedida()->getDescricao()}</td>
                         <td class=''>{$quadrado->DesenharQuadrado()}</td>
-                        <td><a href='index.php?id_quadrado={$quadrado->getIdQuadrado()}'>Alterar</a></td>
+                        <td><a href='index.php?id_quadrado={$quadrado->getId()}'>Alterar</a></td>
                     </tr>";
                 }
             ?>

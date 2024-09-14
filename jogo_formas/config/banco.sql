@@ -12,8 +12,27 @@ create table unidadeMedida(
 	id_unidadeMedida int auto_increment not null primary key,
     descricao varchar(45)
 );
+
+create table triangulo(
+	id_triangulo int not null primary key auto_increment,
+    ladoA int not null, 
+    ladoB int not null, 
+    ladoC int not null
+);
 select * from unidadeMedida;
-select * from quadrado;
-select * from quadrado, unidadeMedida where descricao LIKE '%px%';
+select * from triangulo;
+select * from quadrado, unidadeMedida where unidadeMedida.descricao LIKE '%px%';
 select * from quadrado, unidadeMedida where quadrado.unidadeMedida = unidadeMedida.id_unidadeMedida;
 
+alter table quadrado 
+add column fundo varchar(250);
+
+alter table triangulo 
+add column tipo int not null,
+add column cor varchar(250),
+add column fundo varchar(250),
+add column unidadeMedida int not null,
+add foreign key(unidadeMedida) references UnidadeMedida(id_unidadeMedida);
+
+alter table triangulo 
+drop column tipo;
