@@ -3,7 +3,7 @@
     require_once("../classes/UnidadeMedida.class.php");
     require_once("../classes/Formas.class.php");
 
-    class Triangulo extends Formas{
+    abstract class Triangulo extends Formas{
         private $ladoA;
         private $ladoB;
         private $ladoC;
@@ -16,7 +16,7 @@
         }
 
         public function inserir(){ //assinatura do método
-            $sql = "INSERT INTO triangulo(ladoA, ladoB, ladoC, cor, unidadeMedida, fundo) VALUES (:ladoA, :ladoB, :ladoC, :cor, :unidadeMedida, :fundo)";
+            $sql = "INSERT INTO triangulo(ladoA, ladoB, ladoC, cor, unidadeMedida, fundo, tipo) VALUES (:ladoA, :ladoB, :ladoC, :cor, :unidadeMedida, :fundo, :tipo)";
             $parametros = [
                 ':ladoA' => $this->getLadoA(),
                 ':ladoB' => $this->getLadoB(),
@@ -24,13 +24,14 @@
                 ':cor' => parent::getCor(),
                 ':unidadeMedida' => parent::getUnidadeMedida()->getIdUnidadeMedida(),
                 ':fundo' => parent::getFundo(),
+                ':tipo' => $this->nome()
             ];
 
             Database::executar($sql, $parametros);
         }
 
         public function alterar(){
-            $sql = "UPDATE triangulo SET ladoA = :ladoA, ladoB = :ladoB, ladoC = :ladoC, cor = :cor, unidadeMedida = :unidadeMedida, fundo = :fundo WHERE id_triangulo = :id_triangulo";
+            $sql = "UPDATE triangulo SET ladoA = :ladoA, ladoB = :ladoB, ladoC = :ladoC, cor = :cor, unidadeMedida = :unidadeMedida, fundo = :fundo, tipo = :tipo WHERE id_triangulo = :id_triangulo";
             $parametros = [
                 ':id_triangulo' => parent::getId(),
                 ':ladoA' => $this->getLadoA(),
@@ -39,6 +40,7 @@
                 ':cor' => parent::getCor(),
                 ':unidadeMedida' => parent::getUnidadeMedida()->getIdUnidadeMedida(),
                 ':fundo' => parent::getFundo(),
+                ':tipo' => $this->nome()
             ];
 
             Database::executar($sql, $parametros);
@@ -53,21 +55,21 @@
             Database::executar($sql, $parametros);
         }
 
-        public static function listar($tipo = 0, $busca = ""):array{
-            $sql = "SELECT * FROM triangulo";
+        public static function listar($tipo = 0, $busca = "") : array{
+            $sql = "SELECT * FROM triangulo ";
             if($tipo > 0){
                 switch($tipo){
                     case 1: 
-                        $sql .= " WHERE id_triangulo = :busca"; 
+                        $sql .= " AND id_triangulo = :busca"; 
                         break;
                     case 2: 
-                        $sql .= " WHERE ladoA = :busca"; 
+                        $sql .= " AND ladoA = :busca"; 
                         break;
                     case 3: 
-                        $sql .= " WHERE ladoB = :busca"; 
+                        $sql .= " AND ladoB = :busca"; 
                         break;
                     case 4: 
-                        $sql .= " WHERE ladoC = :busca"; 
+                        $sql .= " AND ladoC = :busca"; 
                         break;
                     default:
                         throw new Exception("Tipo de busca inválido.");
@@ -84,22 +86,23 @@
 
             while($registro = $comando->fetch(PDO::FETCH_ASSOC)){
                 $unidade = UnidadeMedida::listar(1, $registro['unidadeMedida'])[0];
-                $triangulo = new Triangulo($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
+                
+                if($registro['ladoA'] == $registro['ladoB'] && $registro['ladoB'] == $registro['ladoC']){
+                    $triangulo = new Equilatero($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
+                }elseif(($registro['ladoA'] == $registro['ladoB'] && $registro['ladoB'] != $registro['ladoC']) || ($registro['ladoB'] == $registro['ladoC'] && $registro['ladoC'] != $registro['ladoA']) || ($registro['ladoA'] == $registro['ladoC'] && $registro['ladoC'] != $registro['ladoB'])){
+                    $triangulo = new Isosceles($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
+                } elseif($registro['ladoA'] != $registro['ladoB'] && $registro['ladoA'] != $registro['ladoC'] && $registro['ladoB'] != $registro['ladoC']){
+                    $triangulo = new Escaleno($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
+                } 
+
                 array_push($formas, $triangulo);
             }
             return $formas;
-        }
-    
-        // public function DesenharQuadrado(){
-            // return "<div style='display: inline-block;
-            //         width:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
-            //         height:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
-            //         background-color:".$this->getCor().";
-            //         background-image: url(\"{$this->getFundo()}\")'></div>";
-        // }
-        
-        // abstract public function calcularArea();
-        // abstract public function calcularPerimetro();
+        } //ou seja, precisa ser tudo igual
+        abstract public function desenhar();
+        abstract public function calcularArea();
+        abstract public function calcularPerimetro();
+        abstract public function nome():string;
 
 
         /**

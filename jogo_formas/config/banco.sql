@@ -33,6 +33,3 @@ add column cor varchar(250),
 add column fundo varchar(250),
 add column unidadeMedida int not null,
 add foreign key(unidadeMedida) references UnidadeMedida(id_unidadeMedida);
-
-alter table triangulo 
-drop column tipo;

@@ -79,9 +79,18 @@
         <legend>Buscar:</legend>
         <form action="" method="get">
             <div class="row">
-                <div class="col-3"></div>
+                <div class="col-1"></div>
                 <div class="col-3">
-                    <label for="tipo_triangulo" class="form-label">Tipo:</label>
+                    <label for="triangulo" class="form-label">Tipo do Triângulo</label>
+                    <select name="triangulo" id="triangulo" class="form-select">
+                        <option value="0">Selecione</option>
+                        <option value="1">Equilátero</option>
+                        <option value="2">Escaleno</option>
+                        <option value="3">Isósceles</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="tipo_triangulo" class="form-label">Burcar por:</label>
                     <select name="tipo_triangulo" id="tipo_triangulo" class="form-select">
                         <option value="0">Selecione</option>
                         <option value="1">Id Quadrado</option>
@@ -104,11 +113,12 @@
     <div class="container mt-5 text-center">
         <table class="table table-hover border align-middle table-bordered">
             <tr class="table-dark">
-                <th>Id Triângulo</th>
+                <th>Id</th>
                 <th>Lado A</th>
                 <th>Lado B</th>
                 <th>Lado C</th>
                 <th>Desenho do triangulo</th>
+                <th>Tipo de Triângulo</th>
                 <th>Alterar</th>
             </tr>    
     
@@ -119,7 +129,9 @@
                         <td>{$triangulo->getLadoA()}</td>
                         <td>{$triangulo->getLadoB()}</td>
                         <td>{$triangulo->getLadoC()}</td>
-                        <td><a href='index.php?id_triangulo={$triangulo->getId()}'>Alterar</a></td>
+                        <td class=''>{$triangulo->desenhar()}</td>
+                        <td>{$triangulo->nome()}</td>
+                        <td><a href='index.php?id_triangulo={$triangulo->getId()}&nome={$triangulo->nome()}'>Alterar</a></td>
                     </tr>";
                 }
             ?>

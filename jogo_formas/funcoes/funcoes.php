@@ -1,15 +1,15 @@
 <?php
     function TipoTriangulo($ladoA, $ladoB, $ladoC){
         if($ladoA == $ladoB && $ladoB == $ladoC){
-            $triangulo = "Equilátero";
+            $triangulo = 1;
         } elseif($ladoA != $ladoB && $ladoB != $ladoC){
-            $triangulo = "Escaleno";
+            $triangulo = 2;
         } elseif($ladoA == $ladoB && $ladoB != $ladoC){
-            $triangulo = "Isosceles";
+            $triangulo = 3;
         } elseif($ladoB == $ladoC && $ladoC != $ladoA){
-            $triangulo = "Isosceles";
+            $triangulo = 3;
         } elseif($ladoA == $ladoC && $ladoC != $ladoB){
-            $triangulo = "Isosceles";
+            $triangulo = 3;
         }
         return $triangulo;
     }

@@ -80,7 +80,7 @@
             return $formas;
         }
 
-        public function DesenharQuadrado(){
+        public function desenhar(){
             return "<div style='display: inline-block;
                     width:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
                     height:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";

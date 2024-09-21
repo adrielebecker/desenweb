@@ -106,7 +106,7 @@
                         <td>{$quadrado->getLado()}</td>
                         <td>{$quadrado->getCor()}</td>
                         <td>{$quadrado->getUnidadeMedida()->getDescricao()}</td>
-                        <td class=''>{$quadrado->DesenharQuadrado()}</td>
+                        <td class=''>{$quadrado->desenhar()}</td>
                         <td><a href='index.php?id_quadrado={$quadrado->getId()}'>Alterar</a></td>
                     </tr>";
                 }

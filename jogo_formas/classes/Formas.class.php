@@ -15,10 +15,10 @@
         abstract public function inserir(); //faz com que as classes filhas tenham que implementar esse método
         abstract public function alterar();
         abstract public function excluir(); //tanto na filha quando no pai precisam ter a mesma assinatura
-        // abstract  public static function listar($tipo = 0, $busca = "") : array; //ou seja, precisa ser tudo igual
-        // abstract public function DesenharQuadrado();
-        // abstract public function calcularArea();
-        // abstract public function calcularPerimetro(   );
+        abstract  public static function listar($tipo = 0, $busca = "") : array; //ou seja, precisa ser tudo igual
+        abstract public function desenhar();
+        abstract public function calcularArea();
+        abstract public function calcularPerimetro();
 
         public function getId(){
             return $this->id;
