@@ -72,7 +72,7 @@
                     <label for="tipo_circulo" class="form-label">Tipo:</label>
                     <select name="tipo_circulo" id="tipo_circulo" class="form-select">
                         <option value="0">Selecione</option>
-                        <option value="1">Id Quadrado</option>
+                        <option value="1">Id</option>
                         <option value="2">Raio</option>
                         <option value="3">Cor</option>
                     </select>
