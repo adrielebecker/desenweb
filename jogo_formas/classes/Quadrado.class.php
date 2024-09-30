@@ -80,7 +80,7 @@
             return $formas;
         }
 
-        public function desenhar(){
+        public function desenhar(){        
             return "<div style='display: inline-block;
                     width:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
                     height:".$this->getLado().$this->getUnidadeMedida()->getDescricao().";
@@ -90,12 +90,12 @@
         
         public function calcularArea(){
             $area = $this->getLado() * $this->getLado();
-            return $area;
+            return round($area, 2);
         }
-        
+
         public function calcularPerimetro(){
             $perimetro = $this->getLado() + $this->getLado() + $this->getLado() + $this->getLado();
-            return $perimetro;
+            return round($perimetro, 2);
         }
 
         public function getLado(){

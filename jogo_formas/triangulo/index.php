@@ -15,22 +15,22 @@
         <legend>Cadastro de triângulo</legend>
         <form action="triangulo.php" method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-2">
-                    <label for="id_triangulo" class="form-label">Id Triângulo:</label>                        
+                <div class="col-1">
+                    <label for="id_triangulo" class="form-label">Id:</label>                        
                     <input type="text" name="id_triangulo" id="id_triangulo" value="<?=isset($triangulo) ? $triangulo->getId() : 0?>" class="form-control">
                 </div>
                 
-                <div class="col-2">
+                <div class="col-1">
                     <label for="ladoA" class="form-label">Lado A:</label>                        
                     <input type="text" name="ladoA" id="ladoA" value="<?php if(isset($triangulo)) echo $triangulo->getLadoA()?>" class="form-control">
                 </div>
 
-                <div class="col-2">
+                <div class="col-1">
                     <label for="ladoB" class="form-label">Lado B:</label>                        
                     <input type="text" name="ladoB" id="ladoB" value="<?php if(isset($triangulo)) echo $triangulo->getLadoB()?>" class="form-control">
                 </div>
                 
-                <div class="col-2">
+                <div class="col-1">
                     <label for="ladoC" class="form-label">Lado C:</label>                        
                     <input type="text" name="ladoC" id="ladoC" value="<?php if(isset($triangulo)) echo $triangulo->getLadoC()?>" class="form-control">
                 </div>
@@ -39,14 +39,12 @@
                     <label for="fundo" class="form-label">Imagem de Fundo</label>
                     <input type="file" name="fundo" id="fundo" value="<?php if(isset($triangulo)) echo $triangulo->getFundo()?>" class="form-control">
                 </div>
-            </div>
-
-            <div class="row mt-4tt">
+                
                 <div class="col-1">
                     <label for="cor" class="form-label">Cor:</label>
                     <input type="color" name="cor" id="cor" class="form-control-color" value="<?php if(isset($triangulo)) echo $triangulo->getCor()?>">
                 </div>
-
+                
                 <div class="col-3">
                     <label for="unidade_medida" class="form-label">Unidade de Medida:</label>   
                     <select name="unidade_medida" id="unidade_medida" class="form-select">
@@ -65,6 +63,9 @@
                         ?>                
                     </select>
                 </div>
+            </div>
+
+            <div class="row mt-4tt">
                 <div class="col-1 mt-2">
                     <button type="submit" name="acao" id="acao" value="salvar" class="btn btn-success mt-4">Salvar</button>
                 </div>

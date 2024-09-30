@@ -15,8 +15,8 @@
         <legend>Cadastro de quadrado</legend>
         <form action="quadrado.php" method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-2">
-                    <label for="id_quadrado" class="form-label">Id quadrado:</label>                        
+                <div class="col-1">
+                    <label for="id_quadrado" class="form-label">Id:</label>                        
                     <input type="text" name="id_quadrado" id="id_quadrado" value="<?=isset($quadrado) ? $quadrado->getId() : 0?>" class="form-control">
                 </div>
                 
@@ -25,7 +25,7 @@
                     <input type="color" name="cor" id="cor" value="<?php if(isset($quadrado)) echo $quadrado->getCor()?>" class="form-control-color ms-2">
                 </div>
 
-                <div class="col-3">
+                <div class="col-1">
                     <label for="lado" class="form-label">Lado:</label>                        
                     <input type="text" name="lado" id="lado" value="<?php if(isset($quadrado)) echo $quadrado->getLado()?>" class="form-control">
                 </div>
@@ -48,7 +48,7 @@
                     ?>                
                     </select>  
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <label for="fundo" class="form-label">Imagem de Fundo</label>
                     <input type="file" name="fundo" id="fundo" value="<?php if(isset($quadrado)) echo $quadrado->getFundo()?>" class="form-control">
                 </div>     
