@@ -12,14 +12,16 @@
             return "Isósceles";
         }
 
-        public function calcularArea(){ //mudar
-            $altura = (parent::getLadoA() * sqrt(3)) / 2;
-            return $altura;
+        public function calcularPerimetro(){
+            $perimetro = parent::getLadoA() + parent::getLadoB() + parent::getLadoC();   
+            return round($perimetro, 2);
         }
 
-        public function calcularPerimetro(){ //mudar
-            $perimetro = parent::getLadoA() + parent::getLadoB() + parent::getLadoC();   
-            return $perimetro;
+        public function calcularArea(){
+            $sp = (parent::getLadoA() + parent::getLadoB() + parent::getLadoC()) / 2;   
+            $area = sqrt($sp * ($sp - parent::getLadoA()) * ($sp - parent::getLadoB()) * ($sp - parent::getLadoC()));
+            
+            return round($area, 2);
         }
 
         public static function listar($tipo = 0, $busca = ""):array{
@@ -58,13 +60,13 @@
             }
             return $formas;
         }
-        public function desenhar(){ //mudar
-            return "<div style='display: inline-block;
-                border-left:".parent::getLadoA().$this->getUnidadeMedida()->getDescricao().";
-                border-right:".parent::getLadoB().$this->getUnidadeMedida()->getDescricao().";
-                border-bottom:".parent::getLadoC().$this->getUnidadeMedida()->getDescricao().";
-                background-color:".$this->getCor().";
-                background-image: url(\"{$this->getFundo()}\")'></div>";
+        public function desenhar(){ 
+            return "<div style= 'width: 0;
+                height: 0;
+                border-left: ".parent::getLadoA().$this->getUnidadeMedida()->getDescricao()." solid transparent;
+                border-right: ".parent::getLadoB().$this->getUnidadeMedida()->getDescricao()." solid transparent;
+                border-bottom: ".parent::getLadoC().$this->getUnidadeMedida()->getDescricao()." solid ".$this->getCor().";'>
+            </div>";
         }
         
     }

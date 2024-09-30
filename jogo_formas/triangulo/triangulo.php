@@ -6,7 +6,7 @@
     require_once('../classes/UnidadeMedida.class.php');
     
     $id_triangulo = isset($_GET['id_triangulo']) ? $_GET['id_triangulo'] : 0;
-    $nome = isset($_GET['nome']) ? $_GET['nome'] : "";
+    $nome = isset($_GET['triangulo']) ? $_GET['triangulo'] : "";
     if($id_triangulo > 0){
         if($nome == "Equilátero"){
             $triangulo = Equilatero::listar(1, $id_triangulo)[0];

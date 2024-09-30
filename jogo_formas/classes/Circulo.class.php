@@ -3,12 +3,12 @@
     require_once("../classes/UnidadeMedida.class.php");
     require_once("../classes/Formas.class.php");
 
-    class Quadrado extends Formas{
-        private $lado;
+    class Circulo extends Formas{
+        private $raio;
 
-        public function __construct($id = 0, $lado = 0, $cor = "", UnidadeMedida $unidade_medida = null, $fundo = "null"){
+        public function __construct($id = 0, $raio = 0, $cor = "", UnidadeMedida $unidade_medida = null, $fundo = "null"){
             parent::__construct($id, $cor, $unidade_medida, $fundo); //chamando o construtor da classe pai
-            $this->setLado($lado);
+            $this->setRaio($raio);
         }
 
         public function inserir(){ //assinatura do método

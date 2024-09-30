@@ -91,10 +91,12 @@
     <div class="container mt-5 text-center">
         <table class="table table-hover border align-middle table-bordered">
             <tr class="table-dark">
-                <th>Id Quadrado</th>
+                <th>Id</th>
                 <th>Lado</th>
                 <th>Cor</th>
                 <th>Unidade de Medida</th>
+                <th>Área</th>
+                <th>Perímetro</th>
                 <th>Desenho do quadrado</th>
                 <th>Alterar</th>
             </tr>    
@@ -106,7 +108,9 @@
                         <td>{$quadrado->getLado()}</td>
                         <td>{$quadrado->getCor()}</td>
                         <td>{$quadrado->getUnidadeMedida()->getDescricao()}</td>
-                        <td class=''>{$quadrado->desenhar()}</td>
+                        <td>{$quadrado->calcularArea()}</td>
+                        <td>{$quadrado->calcularPerimetro()}</td>
+                        <td>{$quadrado->desenhar()}</td>
                         <td><a href='index.php?id_quadrado={$quadrado->getId()}'>Alterar</a></td>
                     </tr>";
                 }

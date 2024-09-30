@@ -114,24 +114,28 @@
         <table class="table table-hover border align-middle table-bordered">
             <tr class="table-dark">
                 <th>Id</th>
+                <th>Cor</th>
+                <th>Unidade de Medida</th>
                 <th>Lado A</th>
                 <th>Lado B</th>
                 <th>Lado C</th>
-                <th>Desenho do triangulo</th>
                 <th>Tipo de Triângulo</th>
                 <th>Alterar</th>
+                <th>Detalhes</th>
             </tr>    
     
             <?php
                 foreach($lista_triangulo as $triangulo){
                     echo "<tr>
                         <td>{$triangulo->getId()}</td>
+                        <td>{$triangulo->getCor()}</td>
+                        <td>{$triangulo->getUnidadeMedida()->getDescricao()}</td>
                         <td>{$triangulo->getLadoA()}</td>
                         <td>{$triangulo->getLadoB()}</td>
                         <td>{$triangulo->getLadoC()}</td>
-                        <td class=''>{$triangulo->desenhar()}</td>
                         <td>{$triangulo->nome()}</td>
-                        <td><a href='index.php?id_triangulo={$triangulo->getId()}&nome={$triangulo->nome()}'>Alterar</a></td>
+                        <td><a href='index.php?id_triangulo={$triangulo->getId()}&triangulo={$triangulo->nome()}'>Alterar</a></td>
+                        <td><a href='detalhes.php?id_triangulo={$triangulo->getId()}&triangulo={$triangulo->nome()}'>Detalhes</a></td>
                     </tr>";
                 }
             ?>
