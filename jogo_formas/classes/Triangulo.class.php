@@ -103,6 +103,7 @@
         abstract public function calcularArea();
         abstract public function calcularPerimetro();
         abstract public function nome():string;
+        abstract public function angulo();
 
 
         /**

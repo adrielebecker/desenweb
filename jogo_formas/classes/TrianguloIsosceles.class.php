@@ -23,6 +23,32 @@
             
             return round($area, 2);
         }
+        
+        public function angulo(){
+            $angulos = array();
+            $a = parent::getLadoA();
+            $b = parent::getLadoB();
+            $c = parent::getLadoC();
+
+            $cosA = (pow($b, 2) + pow($c, 2) - pow($a, 2)) / (2 * $b * $c);
+            $cosB = (pow($a, 2) + pow($c, 2) - pow($b, 2)) / (2 * $a * $c);
+            $cosC = (pow($a, 2) + pow($b, 2) - pow($c, 2)) / (2 * $a * $b);
+            $anguloA = round(rad2deg(acos($cosA)));
+            $anguloB = round(rad2deg(acos($cosB)));
+            $anguloC = round(rad2deg(acos($cosC)));
+
+            $angulos = ['a' => $anguloA,
+                        'b' => $anguloB,
+                        'c' => $anguloC,
+                    ];
+                
+            $soma = $anguloA + $anguloB + $anguloC;
+            if($soma == 180){
+                return $angulos;
+            } else{
+                return "Ângulos não correspondem!";
+            }
+        }
 
         public static function listar($tipo = 0, $busca = ""):array{
             $sql = "SELECT * FROM triangulo WHERE tipo = 'Isósceles'";

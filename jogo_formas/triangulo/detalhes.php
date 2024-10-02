@@ -16,18 +16,29 @@
                 <th>Id</th>
                 <th>Área</th>
                 <th>Perímetro</th>
+                <th>Ângulo A</th>
+                <th>Ângulo B</th>
+                <th>Ângulo C</th>
                 <th>Desenho</th>
             </tr>    
             
             <?php
                 foreach($lista_triangulo as $triangulo){
                     if($triangulo->getId() == $id_triangulo){
-                        echo "<tr>
-                            <td>{$triangulo->getId()}</td>
-                            <td>{$triangulo->calcularArea()}</td>
-                            <td>{$triangulo->calcularPerimetro()}</td>
-                            <td>{$triangulo->desenhar()}</td>
-                        </tr>";
+                        $angulos = $triangulo->angulo();
+                        if($angulos != "Ângulos não correspondem!"){
+                            echo "<tr>
+                                <td>{$triangulo->getId()}</td>
+                                <td>{$triangulo->calcularArea()}</td>
+                                <td>{$triangulo->calcularPerimetro()}</td>
+                                <td>{$angulos['a']}</td>
+                                <td>{$angulos['b']}</td>
+                                <td>{$angulos['c']}</td>
+                                <td>{$triangulo->desenhar()}</td>
+                            </tr>";
+                        } else{
+                            echo "Ângulos não correspondem!";
+                        }
                     }
                 }
             ?>
