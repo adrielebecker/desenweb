@@ -42,9 +42,10 @@
                         'b' => $anguloB,
                         'c' => $anguloC,
                     ];
-                
+            
             $soma = $anguloA + $anguloB + $anguloC;
-            if($soma == 180){
+
+            if($soma <= 180 && $soma >= 179){
                 return $angulos;
             } else{
                 return "Ângulos não correspondem!";

@@ -29,27 +29,37 @@
         $destino = "../".IMG."/".$arquivo['name'];
         
         try {
-            $unidade = UnidadeMedida::listar(1, $unidade_medida)[0];
-            if($ladoA == $ladoB && $ladoB == $ladoC){
-                $triangulo = new Equilatero($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
-            } elseif(($ladoA == $ladoB && $ladoB != $ladoC) || ($ladoB == $ladoC && $ladoC != $ladoA) || ($ladoA == $ladoC && $ladoC != $ladoB)){
-                $triangulo = new Isosceles($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
-            } elseif($ladoA != $ladoB && $ladoA != $ladoC && $ladoB != $ladoC){
-                $triangulo = new Escaleno($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
-            } 
+            $somaAB = $ladoA + $ladoB;
+            $somaBC = $ladoB + $ladoC;
+            $somaAC = $ladoA + $ladoC;
 
-            if($acao == "salvar"){
-                if($id_triangulo > 0){
-                    $resultado = $triangulo->alterar();
-                } else{
-                    $resultado = $triangulo->inserir();
+            if($somaAB >= $ladoC && $somaBC >= $ladoA && $somaAC >= $ladoB){
+                $unidade = UnidadeMedida::listar(1, $unidade_medida)[0];
+                if($ladoA == $ladoB && $ladoB == $ladoC){
+                    $triangulo = new Equilatero($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
+                } elseif(($ladoA == $ladoB && $ladoB != $ladoC) || ($ladoB == $ladoC && $ladoC != $ladoA) || ($ladoA == $ladoC && $ladoC != $ladoB)){
+                    $triangulo = new Isosceles($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
+                } elseif($ladoA != $ladoB && $ladoA != $ladoC && $ladoB != $ladoC){
+                    $triangulo = new Escaleno($id_triangulo, $ladoA, $ladoB, $ladoC, $cor, $unidade, $destino);
                 }
-            } elseif($acao == "excluir"){
-                $resultado = $triangulo->excluir();
+                
+                if($acao == "salvar"){
+                    if($id_triangulo > 0){
+                        $resultado = $triangulo->alterar();
+                    } else{
+                        $resultado = $triangulo->inserir();
+                    }
+                } elseif($acao == "excluir"){
+                    $resultado = $triangulo->excluir();
+                }
+    
+                move_uploaded_file($arquivo['tmp_name'], $destino);
+                header('Location: index.php');
+            } else{
+                echo "Não é um triângulo válido!";
             }
 
-            move_uploaded_file($arquivo['tmp_name'], $destino);
-            header('Location: index.php');
+            
         } catch (PDOException $e) {
             header('Location: index.php?MSG=Erro: '.$e->getMessage());
         }
