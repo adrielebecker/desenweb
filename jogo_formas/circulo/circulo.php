@@ -1,6 +1,5 @@
 <?php
-    require_once("../classes/Circulo.class.php");
-    require_once("../classes/UnidadeMedida.class.php");
+    require_once("../classes/autoload.php");
 
     $id_circulo = isset($_GET['id_circulo']) ? $_GET['id_circulo'] : 0;
     if($id_circulo > 0){

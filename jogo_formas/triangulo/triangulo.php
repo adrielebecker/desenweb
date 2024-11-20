@@ -1,9 +1,5 @@
 <?php
-    require_once('../classes/Triangulo.class.php');
-    require_once('../classes/TrianguloEquilatero.class.php');
-    require_once('../classes/TrianguloEscaleno.class.php');
-    require_once('../classes/TrianguloIsosceles.class.php');
-    require_once('../classes/UnidadeMedida.class.php');
+    require_once("../classes/autoload.php");
     
     $id_triangulo = isset($_GET['id_triangulo']) ? $_GET['id_triangulo'] : 0;
     $nome = isset($_GET['triangulo']) ? $_GET['triangulo'] : "";

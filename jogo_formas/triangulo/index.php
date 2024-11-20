@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include "triangulo.php";  
-    include "../unidadeMedida/unidadeMedida.php";
+    require_once("../classes/autoload.php");
 ?>
 <html lang="pt-BR">
 <head>

@@ -1,17 +1,16 @@
 <?php
-    require_once("../classes/Database.class.php");
-    require_once("../classes/UnidadeMedida.class.php");
-    require_once("../classes/Formas.class.php");
+    require_once("../classes/autoload.php");
 
-    class Equilatero extends Triangulo{
+    class Escaleno extends Triangulo{
         public function __construct($id = 0, $ladoA = 0, $ladoB = 0, $ladoC = 0, $cor = "", UnidadeMedida $unidade_medida = null, $fundo = "null"){
             parent::__construct($id, $ladoA, $ladoB, $ladoC, $cor, $unidade_medida, $fundo);
         }
         
         public function nome(): string {
-            return "Equilátero";
+            return "Escaleno";
         }
 
+        
         public function calcularPerimetro(){
             $perimetro = (parent::getLadoA() + parent::getLadoB() + parent::getLadoC()) / 2;   
             return round($perimetro, 2);
@@ -20,6 +19,7 @@
         public function calcularArea(){
             $p = (parent::getLadoA() + parent::getLadoB() + parent::getLadoC()) / 2;   
             $area = sqrt($p * ($p - parent::getLadoA()) * ($p - parent::getLadoB()) * ($p - parent::getLadoC()));
+            
             return round($area, 2);
         }
 
@@ -40,17 +40,18 @@
                         'b' => $anguloB,
                         'c' => $anguloC,
                     ];
-                
+            
             $soma = $anguloA + $anguloB + $anguloC;
+
             if($soma <= 180 && $soma >= 179){
                 return $angulos;
             } else{
-                echo "Ângulos não correspondem!";
+                return "Ângulos não correspondem!";
             }
         }
 
         public static function listar($tipo = 0, $busca = ""):array{
-            $sql = "SELECT * FROM triangulo WHERE tipo = 'Equilátero'";
+            $sql = "SELECT * FROM triangulo WHERE tipo = 'Escaleno'";
             if($tipo > 0){
                 switch($tipo){
                     case 1: 
@@ -69,6 +70,7 @@
                         throw new Exception("Tipo de busca inválido.");
                 }
             }
+
             $parametros = array();
 
             if($tipo > 0){
@@ -80,18 +82,19 @@
 
             while($registro = $comando->fetch(PDO::FETCH_ASSOC)){
                 $unidade = UnidadeMedida::listar(1, $registro['unidadeMedida'])[0];
-                $triangulo = new Equilatero($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
+                $triangulo = new Escaleno($registro['id_triangulo'], $registro['ladoA'], $registro['ladoB'], $registro['ladoC'], $registro['cor'], $unidade, $registro['fundo']);
                 array_push($formas, $triangulo);
             }
             return $formas;
         }
+        
         public function desenhar(){
             return "<div style= 'width: 0;
-                    height: 0;
-                    border-left: ".parent::getLadoA().$this->getUnidadeMedida()->getDescricao()." solid transparent;
-                    border-right: ".parent::getLadoB().$this->getUnidadeMedida()->getDescricao()." solid transparent;
-                    border-bottom: ".parent::getLadoC().$this->getUnidadeMedida()->getDescricao()." solid ".$this->getCor().";'>
-                </div>";
+                height: 0;
+                border-left: ".parent::getLadoA().$this->getUnidadeMedida()->getDescricao()." solid transparent;
+                border-right: ".parent::getLadoB().$this->getUnidadeMedida()->getDescricao()." solid transparent;
+                border-bottom: ".parent::getLadoC().$this->getUnidadeMedida()->getDescricao()." solid ".$this->getCor().";'>
+            </div>";
         }
         
     }

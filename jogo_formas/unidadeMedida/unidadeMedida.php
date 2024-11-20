@@ -1,5 +1,5 @@
 <?php
-    require_once("../classes/UnidadeMedida.class.php");
+    require_once("../classes/autoload.php");
 
     $id_unidadeMedida = isset($_GET['id_unidadeMedida']) ? $_GET['id_unidadeMedida'] : 0;
     if($id_unidadeMedida > 0){

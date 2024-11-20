@@ -1,7 +1,5 @@
 <?php
-    require_once("../classes/Database.class.php");
-    require_once("../classes/UnidadeMedida.class.php");
-    require_once("../classes/Formas.class.php");
+    require_once("../classes/autoload.php");
 
     class Isosceles extends Triangulo{
         public function __construct($id = 0, $ladoA = 0, $ladoB = 0, $ladoC = 0, $cor = "", UnidadeMedida $unidade_medida = null, $fundo = "null"){

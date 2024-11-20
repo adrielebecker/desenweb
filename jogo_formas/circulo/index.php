@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include "circulo.php";
-    include "../unidadeMedida/unidadeMedida.php";
+    require_once("../classes/autoload.php");
 ?>
 <html lang="pt-BR">
 <head>
