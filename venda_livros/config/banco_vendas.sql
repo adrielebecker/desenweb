@@ -21,8 +21,9 @@ create table if not exists Livro(
     titulo varchar(250), 
     ano_publicacao int,
     foto_capa varchar(45),
-    id_categoria int,
-    preco double
+    categoria int,
+    preco double,
+    foreign key(categoria) references Categorias(id_categoria)
 );
 
 create table if not exists AutorLivro(

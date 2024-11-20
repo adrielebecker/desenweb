@@ -36,7 +36,7 @@
     } elseif($_SERVER['REQUEST_METHOD'] == 'GET'){
         $tipo_autor = isset($_GET['tipo_autor']) ? $_GET['tipo_autor'] : 0;
         $busca_autor = isset($_GET['busca_autor']) ? $_GET['busca_autor'] : "";
-        $lista_autor = autor::listar($tipo_autor, $busca_autor);
+        $lista_autor = Autor::listar($tipo_autor, $busca_autor);
     }
 
 ?>
