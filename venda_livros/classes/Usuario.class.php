@@ -1,7 +1,7 @@
 <?php
     require_once("../classes/autoload.php");
 
-    class Usuario{
+    class Usuario extends Persistencia{
         private $id_usuario;
         private $nome;
         private $email;
