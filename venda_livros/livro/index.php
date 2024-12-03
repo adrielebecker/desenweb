@@ -55,6 +55,24 @@
                     <input type="text" name="preco" id="preco" class="form-control" value="<?=isset($livro) ? $livro->getPreco() : ""?>">
                 </div>
 
+                <div class="col-3">
+                    <label for="autor_livro" class="form-label">Autor:</label>
+                    <select name="autor_livro" id="autor_livro" class="form-select">
+                        <option value="0">Selecione uma opção</option>
+                    <?php
+                       $autores = Autor::listar();
+                       foreach($autores as $autor){ 
+                           $str = "<option value='{$autor->getIdAutor()}' ";
+                           if(isset($livro)) 
+                               if ($livro->getAutor()->getIdAutor() == $autor->getIdAutor()) 
+                                   $str .= " selected ";
+                           $str .= ">{$autor->getNome()} {$autor->getSobrenome()}</option>";
+                           echo $str;
+                       } 
+                    ?>                
+                    </select> 
+                </div>
+
                 <div class="col-1 mt-4">
                     <button type="submit" class="btn btn-success mt-2" name="acao" id="acao" value="salvar">Salvar</button>
                 </div>

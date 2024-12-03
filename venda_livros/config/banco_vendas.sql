@@ -33,6 +33,9 @@ create table if not exists AutorLivro(
     foreign key(id_livro) references Livro(id_livro)
 );
 
+alter table AutorLivro 
+add column id_autor_livro int not null auto_increment primary key;
+
 create table if not exists Categorias(
 	id_categoria int primary key auto_increment,
     descricao varchar(250)

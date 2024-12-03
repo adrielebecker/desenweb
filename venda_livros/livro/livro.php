@@ -17,12 +17,13 @@
         $arquivo = isset($_FILES['foto_capa']) ? $_FILES['foto_capa'] : "";
         $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : 0;
         $preco = isset($_POST['preco']) ? $_POST['preco'] : "";
+        $autor_livro = isset($_POST['autor_livro']) ? $_POST['autor_livro'] : "";
         $acao = isset($_POST['acao']) ? $_POST['acao'] : "";
         $destino = "../".IMG."/".$arquivo['name'];
 
         try {
             $categoria = Categoria::listar(1, $categoria)[0];
-            $livro = new Livro($id_livro, $titulo, $ano_publicacao, $destino, $categoria, $preco);
+            $livro = new Livro($id_livro, $titulo, $ano_publicacao, $destino, $categoria, $preco, $autor_livro);
             $resultado = "";
 
             if($acao == "salvar"){
